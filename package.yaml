@@ -6,11 +6,11 @@ license: MIT
 
 build-type: Simple
 
-source-dirs: src
+source-dirs: app
 dependencies:
 - { name: "base", version: '>=4.12 && <4.13' }
+- { name: "dhall", version: '^>=1.32.0' }
 
 ghc-options: -Wall
-library: {}
 executable:
   main: Main.hs
