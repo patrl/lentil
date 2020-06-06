@@ -8,7 +8,7 @@ build-type: Simple
 
 source-dirs: app
 dependencies:
-- { name: "base", version: '>=4.12 && <4.13' }
+- { name: "base", version: '>=4.9.1.0 && <5' }
 - { name: "dhall", version: '^>=1.32.0' }
 
 ghc-options: -Wall
