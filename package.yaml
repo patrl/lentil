@@ -13,6 +13,7 @@ dependencies:
 - { name: "clay" }
 - { name: "blaze-html" }
 - { name: "shake" }
+- { name: "text" }
 
 
 source-dirs: src
