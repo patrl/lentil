@@ -1,0 +1,50 @@
+{
+    "ghcide-nix": {
+        "branch": "master",
+        "description": "Nix installation for ghcide",
+        "homepage": "https://github.com/digital-asset/ghcide",
+        "owner": "cachix",
+        "repo": "ghcide-nix",
+        "rev": "67493b873e1a5e5d53837401ab6b128b20e8a989",
+        "sha256": "1zq5g7ka99vcyqbg5l1bx0rliq3ihig37nzczk0wdwidjyxjghf9",
+        "type": "tarball",
+        "url": "https://github.com/cachix/ghcide-nix/archive/67493b873e1a5e5d53837401ab6b128b20e8a989.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "iohk-hnix": {
+        "branch": "master",
+        "description": "Alternative Haskell Infrastructure for Nixpkgs",
+        "homepage": "https://input-output-hk.github.io/haskell.nix",
+        "owner": "input-output-hk",
+        "repo": "haskell.nix",
+        "rev": "80e0e61a8102fefd3431b3f4ec08664f2812918a",
+        "sha256": "0kgn1v5wzv3rz0hvg6dv7xi0i0manq1j073w5vhisib4iqm0mgrc",
+        "type": "tarball",
+        "url": "https://github.com/input-output-hk/haskell.nix/archive/80e0e61a8102fefd3431b3f4ec08664f2812918a.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "iohk-nixpkgs": {
+        "branch": "iohk-18.09",
+        "description": "Nix Packages collection",
+        "homepage": null,
+        "owner": "input-output-hk",
+        "repo": "nixpkgs",
+        "rev": "55db2a95eade4a80fadf85ae7fce7fa293f87f50",
+        "sha256": "0sll5drg4xrq4ap2lwpw9sr11003m0ampw0fs1xp7qgpi4dkp2rr",
+        "type": "tarball",
+        "url": "https://github.com/input-output-hk/nixpkgs/archive/55db2a95eade4a80fadf85ae7fce7fa293f87f50.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "niv": {
+        "branch": "master",
+        "description": "Easy dependency management for Nix projects",
+        "homepage": "https://github.com/nmattia/niv",
+        "owner": "nmattia",
+        "repo": "niv",
+        "rev": "f73bf8d584148677b01859677a63191c31911eae",
+        "sha256": "0jlmrx633jvqrqlyhlzpvdrnim128gc81q5psz2lpp2af8p8q9qs",
+        "type": "tarball",
+        "url": "https://github.com/nmattia/niv/archive/f73bf8d584148677b01859677a63191c31911eae.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    }
+}
