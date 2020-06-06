@@ -1,4 +1,12 @@
+{-# LANGUAGE DeriveGeneric     #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+
 module Main where
 
+import Dhall
+
 main :: IO ()
-main = putStrLn "Hello, Haskell!"
+main = do
+  (siteRaw :: Text) <- input auto "./data/site.dhall"
+  print siteRaw
