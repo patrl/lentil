@@ -19,7 +19,7 @@ let
       pkgs.haskellPackages.ghcid
       pkgs.haskellPackages.hpack
       pkgs.haskellPackages.brittany
-      pkgs.haskellPackages.dhall_1_32_0
+      pkgs.haskellPackages.dhall
       ghcide
     ];
   };
