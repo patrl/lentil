@@ -1,5 +1,5 @@
-        # README
+# README
 
-        A tiny `yst` clone using the `dhall` configuration language (WIP).
+A tiny `yst` clone using the `dhall` configuration language (WIP).
 
         
