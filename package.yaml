@@ -9,8 +9,16 @@ build-type: Simple
 dependencies:
 - { name: "base", version: '>=4.9.1.0 && <5' }
 - { name: "dhall", version: '^>=1.32.0' }
+- { name: "pandoc" }
+- { name: "clay" }
+- { name: "blaze-html" }
+- { name: "shake" }
 
-source-dirs: app
+
+source-dirs: src
+
 ghc-options: -Wall
+
+library: {}
 executable:
   main: Main.hs
