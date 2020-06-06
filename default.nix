@@ -9,7 +9,7 @@ let
 
   hspkgs = pkgs.haskell-nix.cabalProject {
     src = pkgs.haskell-nix.haskellLib.cleanGit { name = "lentil"; src = ./.; };
-    compiler-nix-name = ${haskellCompiler};
+    compiler-nix-name = "${haskellCompiler}";
   };
 
   shell = hspkgs.shellFor {
