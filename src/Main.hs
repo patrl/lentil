@@ -14,9 +14,8 @@ import Development.Shake.Forward
 
 main :: IO ()
 main = do
- 
-  let shOpts = forwardOptions $ shakeOptions { shakeVerbosity = Chatty, shakeLintInside = ["\\"]}
- 
+
+
   deployFolder <- input auto "(./data/config.dhall).outputFolder" :: IO FilePath -- read the output folder from the global dhall filepath
   staticFiles <- input auto "(./data/config.dhall).dataDir" :: IO FilePath
  
@@ -35,4 +34,6 @@ main = do
   -- print templated
   print templated
 
+  -- This is an extremely simple shake build script which just copies the static css to the deploy folder.
+  let shOpts = forwardOptions $ shakeOptions { shakeVerbosity = Chatty, shakeLintInside = ["\\"]}
   shakeArgsForward shOpts $ copyStaticFiles (staticFiles <> "css") deployFolder
