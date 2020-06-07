@@ -1,0 +1,17 @@
+* Readme
+
+A tiny ~yst~ clone using the ~dhall~ configuration language (WIP).
+
+** Inspiration
+
+- [[https://github.com/jgm/yst][GitHub - jgm/yst: create static websites from YAML data and string templates]]
+- [[https://github.com/ChrisPenner/slick][GitHub - ChrisPenner/slick: Static site generator built on Shake]]
+- [[https://github.com/srid/rib][GitHub - srid/rib: Haskell static site generator based on Shake]]
+
+** Goals
+
+~Lentil~ is a static site builder, directly inspired by ~yst~, which combines the ~pandoc~ document converter, for converting markup to html, the ~dhall~ configuration language, for site configuration and templating, and the ~shake~ build tool for a blazingly-fast auto-caching build process.
+
+** Resources
+
+- The documentation for ~Development.Shake.Forward~: [[https://hackage.haskell.org/package/shake-0.19.1/docs/Development-Shake-Forward.html]]
