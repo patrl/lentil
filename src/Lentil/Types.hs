@@ -14,6 +14,11 @@ data Page = Page { pageTitle :: Text,
                    contents :: Text,
                    style :: Text } deriving (Show, Read, Eq, Generic)
 
+data SitePage = SitePage {
+  title :: Text
+  , pageContents :: Text
+  }
+
 instance FromDhall Site
 instance FromDhall Page
 instance ToDhall Page
