@@ -15,6 +15,7 @@ dependencies:
 - { name: "shake" }
 - { name: "text" }
 - { name: "filepath" }
+- { name: "containers" }
 
 
 source-dirs: src
