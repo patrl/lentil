@@ -17,6 +17,8 @@ dependencies:
 - { name: "filepath" }
 - { name: "containers" }
 - { name: "time" }
+- { name: "wai-app-static" }
+- { name: "warp" }
 
 
 source-dirs: src
