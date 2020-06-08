@@ -1,6 +1,6 @@
 * Readme
 
-A tiny ~yst~ clone using the ~dhall~ configuration language (WIP).
+A tiny ~yst~ clone using the ~dhall~ configuration language (WIP: ALMOST NOTHING HERE WORKS YET!).
 
 ** Inspiration
 
@@ -15,3 +15,7 @@ A tiny ~yst~ clone using the ~dhall~ configuration language (WIP).
 ** Resources
 
 - The documentation for ~Development.Shake.Forward~: [[https://hackage.haskell.org/package/shake-0.19.1/docs/Development-Shake-Forward.html]]
+
+** TODO
+
+- Explore the possibility of using the ~hasmin~ library for native haskell css minification.
