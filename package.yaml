@@ -16,11 +16,12 @@ dependencies:
 - { name: "text" }
 - { name: "filepath" }
 - { name: "containers" }
+- { name: "time" }
 
 
 source-dirs: src
 
-ghc-options: -Wall
+ghc-options: [-Wall, -threaded]
 
 library: {}
 executable:
