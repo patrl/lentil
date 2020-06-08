@@ -1,7 +1,7 @@
 [ { date =
       "2018"
   , title =
-      "Intervention effects nd higher-order alternatives"
+      "Intervention effects and higher-order alternatives"
   , coauthors =
       [] : List Text
   }

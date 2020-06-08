@@ -4,9 +4,11 @@
   <!DOCTYPE html>
   <html>
       <head>
-          <title>Page Title</title>
+          <title>${(./config.dhall).siteTitle} - ${pageInfo.pageTitle}</title>
           <link rel="stylesheet" href="${pageInfo.style}">
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <meta name="author" content="${(./config.dhall).siteAuthor}">
+          <meta charset="utf-8">
       </head>
       <body id="top">
           <main>
@@ -14,8 +16,8 @@
 
               ${pageInfo.contents}
 
-              <footer>
-                  <p>CSS available under the MIT license.</p>
+              <footer class="text-muted small">
+                      powered by <a href="https://github.com/patrl/lentil">lentil</a>
               </footer>
           </main>
       </body>
