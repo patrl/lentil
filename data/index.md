@@ -1,5 +1,5 @@
 ---
-title: "This is the title"
+title: This is the *title*
 ---
 
 # Welcome
