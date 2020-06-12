@@ -29,7 +29,7 @@ main = do
 
   -- -- This is an extremely simple shake build script which just copies the static css to the deploy folder.
   shakeArgsForward shOpts $ do
-    template <- liftIO $ input auto "./data/layout.dhall" :: Action (Page -> Text)
+    template <- liftIO $ input auto "./data/templates/default.dhall" :: Action (Page -> Text)
     copyStyleFiles cssDir (deployFolder <> "css/")
     buildPages contentDir deployFolder template
-    serve deployFolder
+    serve deployFolder 8000
