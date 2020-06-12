@@ -5,7 +5,7 @@ module Lentil.Render where
 import           Lentil.Types
 import           Text.Pandoc             hiding ( Format )
 import qualified Data.Text                     as T
-import           System.FilePath
+import           Development.Shake.FilePath
 import           Data.Char                      ( toLower )
 
 convertMarkdownToHtmlString :: T.Text -> IO T.Text
