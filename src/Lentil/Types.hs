@@ -12,7 +12,8 @@ data Site = Site { siteTitle :: Text
 
 data Page = Page { pageTitle :: Text,
                    contents :: Text,
-                   style :: Text } deriving (Show, Read, Eq, Generic)
+                   style :: Text,
+                   date :: Text } deriving (Show, Read, Eq, Generic)
 
 data SitePage = SitePage {
   title :: Text
