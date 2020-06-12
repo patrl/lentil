@@ -14,9 +14,8 @@ dependencies:
 - { name: "blaze-html" }
 - { name: "shake" }
 - { name: "text" }
-- { name: "filepath" }
 - { name: "containers" }
-- { name: "time" }
+# - { name: "time" } # I don't need this - there are utility functions exported by the pandoc package
 - { name: "wai-app-static" }
 - { name: "warp" }
 
