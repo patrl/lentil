@@ -22,8 +22,15 @@ defaultWriterOptions = def { writerExtensions = exts }
     ]
 
 -- Handle possible pandoc failure within IO and lift the result into the Action monad.
+-- We want to handle errors within the IO monad.
 pandocIOToAction :: PandocIO a -> Action a
 pandocIOToAction = liftIO . runIOorExplode
 
 renderMd :: T.Text -> Action (T.Text)
 renderMd txt =  pandocIOToAction $ (readMarkdown defaultReaderOptions txt) >>= writeHtml5String defaultWriterOptions
+
+myReadMarkdown :: T.Text -> PandocIO Pandoc
+myReadMarkdown = readMarkdown defaultReaderOptions
+
+myWriteHtml5String :: Pandoc-> PandocIO T.Text
+myWriteHtml5String = writeHtml5String defaultWriterOptions
