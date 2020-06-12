@@ -1,6 +1,5 @@
-
-  λ(pageInfo : { pageTitle : Text, contents : Text, style : Text })
-→ ''
+λ(pageInfo : { pageTitle : Text, contents : Text, style : Text, date : Text }) →
+  ''
   <!DOCTYPE html>
   <html>
       <head>
@@ -18,6 +17,8 @@
 
               <footer class="text-muted small">
                       powered by <a href="https://github.com/patrl/lentil">lentil</a>
+
+                      Last modified: ${pageInfo.date}
               </footer>
           </main>
       </body>
