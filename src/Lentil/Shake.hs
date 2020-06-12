@@ -9,10 +9,7 @@ module Lentil.Shake
   )
 where
 
-import           Lentil.Pandoc                  ( pandocIOToAction
-                                                , myReadMarkdown
-                                                , myWriteHtml5String
-                                                )
+import           Lentil.Pandoc
 import           Development.Shake
 import           Development.Shake.Forward
 import           Development.Shake.FilePath
@@ -40,40 +37,50 @@ copyStyleFiles cssDir outputDir = do
 
 buildPages :: FilePath -> FilePath -> (Page -> D.Text) -> Action ()
 buildPages contentDir outputDir t = do
-  putVerbose $ "Parsing markdown files in " ++ contentDir
-  mdFiles <- getDirectoryFiles contentDir ["//*.md"]
+
+  -- The following retrives the filepaths of the markdown files in contentDir; filepaths returned are relative to the contentDir root.
+  -- This will mean that we retain the directory structure of the contentDir; this will provide the site structure too.
+  putVerbose $ "Loading files in " ++ contentDir
+  mdFiles <- getDirectoryFiles contentDir ["//*.md", "//*.html", "//*.org"]
+
+  -- The following loads the current time.
   putVerbose "Getting current time"
-  now <- pandocIOToAction P.getCurrentTime
+  now <- liftPandoc P.getCurrentTime
   putVerbose $ "The current time is: " ++ show now
-  void $ forP mdFiles $ \filepath -> do
-    md           <- liftIO $ T.readFile $ contentDir </> filepath
-    doc          <- pandocIOToAction $ myReadMarkdown md
-    htmlTitle    <- metaToHtmlTitle $ getMeta doc
-    htmlContents <- pandocIOToAction $ myWriteHtml5String doc
-    let page = t $ Page { pageTitle = htmlTitle
-                        , contents  = htmlContents
-                        , style     = "/css/gruvbox.css"
-                        , date      = pack $ show now
-                        } -- it's important that the link to the style file should be absolute relative to the site root
-    putVerbose $ "writing html files to " ++ outputDir
-    writeFileChanged (outputDir <//> (filepath -<.> "html")) (unpack page)
 
-getMeta :: P.Pandoc -> P.Meta
-getMeta (P.Pandoc meta _) = meta
+  let loadFile f = T.readFile $ contentDir </> f
+      loadMeta f = T.readFile $ contentDir </> (f -<.> "dhall")
+      parseMeta d = D.input D.auto d
+      mkPage tit cont sty dat = t $ Page { pageTitle = tit, contents = cont, style = sty, date = dat }
 
-metaToHtmlTitle :: P.Meta -> Action (D.Text)
-metaToHtmlTitle =
-  pandocIOToAction
-    . myWriteHtml5String
-    . P.Pandoc mempty
-    . pure
-    . P.Plain
-    . P.docTitle
+  void $ forP mdFiles $ \filepath -> case fileToFormat filepath of
+    Just HtmlFormat -> do
+      copyFileChanged (contentDir </> filepath) (outputDir </> filepath)
+    Just _ -> do
+      f     <- liftIO $ loadFile filepath
+      meta <- liftIO $ loadMeta filepath
+      metaParsed <- liftIO $ parseMeta meta :: Action (PageMeta)
+      doc <- liftPandoc $ (if (fileToFormat filepath == Just OrgFormat) then myReadOrg else myReadMarkdown) f
+      htmlContents <- liftPandoc $ myWriteHtml5String doc
+      let page = mkPage (metaTitle metaParsed) htmlContents (metaStyle metaParsed) (pack $ show now)
+      putVerbose $ "writing to " ++ (outputDir </> (filepath -<.> "html"))
+      writeFileChanged (outputDir </> (filepath -<.> "html")) (unpack page)
+    _ -> do
+      putVerbose "Unsupported fileformat"
 
-serve :: FilePath -> Action ()
-serve dir = do
+
+fileToFormat :: FilePath -> Maybe Format
+fileToFormat f = case takeExtension f of
+  ".md"       -> Just MarkdownFormat
+  ".markdown" -> Just MarkdownFormat
+  ".org"      -> Just OrgFormat
+  ".html"     -> Just HtmlFormat
+  _           -> Nothing
+
+serve :: FilePath -> Int -> Action ()
+serve dir port = do
   putVerbose $ "Serving files in " ++ dir ++ "at http://localhost:8000"
-  liftIO $ serveSite dir
+  liftIO $ serveSite dir port
 
 clean :: FilePath -> Action ()
 clean f = do
