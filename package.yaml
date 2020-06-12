@@ -10,12 +10,12 @@ dependencies:
 - { name: "base", version: '>=4.9.1.0 && <5' }
 - { name: "dhall", version: '^>=1.32.0' }
 - { name: "pandoc" }
+- { name: "pandoc-citeproc" }
 - { name: "clay" }
 - { name: "blaze-html" }
 - { name: "shake" }
 - { name: "text" }
 - { name: "containers" }
-# - { name: "time" } # I don't need this - there are utility functions exported by the pandoc package
 - { name: "wai-app-static" }
 - { name: "warp" }
 
