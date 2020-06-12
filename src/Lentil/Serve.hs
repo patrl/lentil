@@ -1,6 +1,6 @@
 -- | 
 
-module Lentil.Serve where
+module Lentil.Serve (serveSite) where
 
 import           Network.Wai.Handler.Warp       ( run )
 import           Network.Wai.Application.Static
