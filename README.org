@@ -16,7 +16,14 @@ A tiny ~yst~ clone using the ~dhall~ configuration language (WIP: ALMOST NOTHING
 
 - The documentation for ~Development.Shake.Forward~: [[https://hackage.haskell.org/package/shake-0.19.1/docs/Development-Shake-Forward.html]]
 
+** Design
+
+- Use haskell for the building logic, and ~Dhall~ as the configuration language.
+- The haskell program is the *source of truth* for dhall types.
+- The data directory
+
 ** TODO
 
 - Explore the possibility of using the ~hasmin~ library for native haskell css minification.
-- Currently using MathML to diplay math, which is only really supported in pandoc.
+  Unfortunately this has some pretty heavy dependencies.
+- Currently using MathML to diplay math, which is only really supported in firefox.
