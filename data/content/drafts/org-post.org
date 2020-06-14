@@ -1,3 +1,0 @@
-#+TITLE: Org Post
-
-* This is an org-post

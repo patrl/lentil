@@ -1,16 +1,10 @@
-let SiteConfig
-    : Type
-    = { siteTitle : Text
-      , outputFolder : Text
-      , dataDir : Text
-      , defaultLayout : Text
-      , siteAuthor : Text
-      }
-
-in    { siteTitle = "Patrick D. Elliott"
-      , outputFolder = "site"
-      , dataDir = "data/"
-      , defaultLayout = "data/templates/default.dhall"
-      , siteAuthor = "Patrick D. Elliott"
-      }
-    : SiteConfig
+  { title = "Patrick D. Elliott"
+  , siteDir = "site"
+  , dataDir = "data"
+  , contentDir = "content"
+  , cssDir = "css"
+  , templateDir = "templates"
+  , defaultLayout = "default.dhall"
+  , author = "Patrick D. Elliott"
+  }
+: ./types/Config.dhall
