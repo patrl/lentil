@@ -29,3 +29,4 @@ cabal.project.local~
 site
 .shake
 *.history
+deploy.sh
