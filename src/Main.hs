@@ -1,6 +1,7 @@
 {-# LANGUAGE DeriveGeneric     #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE DuplicateRecordFields #-}
 
 module Main where
 
@@ -8,28 +9,35 @@ import           Dhall
 import           Lentil.Shake
 -- import           Lentil.Pandoc
 import           Development.Shake.Forward
-import Development.Shake (liftIO,Action)
+import Development.Shake (liftIO,Action,putVerbose)
+import Development.Shake.FilePath ((</>))
 import Lentil.Types
+import Lentil.Serve
 -- import           Text.Pandoc
 
 main :: IO ()
 main = do
 
-  deployFolder <- input auto "(./data/config.dhall).outputFolder" :: IO FilePath -- read the output folder from the global dhall filepath
-  print deployFolder
-  staticFiles <- input auto "(./data/config.dhall).dataDir" :: IO FilePath
-
-  -- Trying to retrieve and print the metadata from a file
-
-  let cssDir = staticFiles <> "css/"
- 
-  let contentDir = staticFiles <> "content/"
-
-  print contentDir
+  config <- input auto "./data/config.dhall" :: IO Config
 
   -- -- This is an extremely simple shake build script which just copies the static css to the deploy folder.
   shakeArgsForward shOpts $ do
-    template <- liftIO $ input auto "./data/templates/default.dhall" :: Action (Page -> Text)
-    copyStyleFiles cssDir (deployFolder <> "css/")
-    buildPages contentDir deployFolder template
-    serve deployFolder 8000
+    copyStyleFiles (dataDir config </> cssDir config) (siteDir config </> "css/")
+    t <- liftIO $ input auto $ "./data/templates/default.dhall" :: Action (Page -> Text)
+    liftIO $ print ("placeholder" :: String)
+    buildPages (dataDir config </> contentDir config) (siteDir config) t
+
+serve :: IO ()
+serve = shakeArgsForward shOpts $ do
+  config <- liftIO $ input auto "./data/config.dhall" :: Action Config
+  putVerbose $ "Serving files in " ++ siteDir config ++ "at http://localhost:8000"
+  liftIO $ serveDir (siteDir config) 8000
+
+clean :: IO ()
+clean = shakeArgsForward shOpts $ do
+  config <- liftIO $ input auto "./data/config.dhall" :: Action Config
+  putVerbose $ "Cleaning " ++ siteDir config
+
+
+configFile :: FilePath
+configFile = "./data/config.dhall"

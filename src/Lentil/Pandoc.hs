@@ -41,6 +41,16 @@ myReadMarkdown = readMarkdown defaultReaderOptions
 myWriteHtml5String :: Pandoc-> PandocIO T.Text
 myWriteHtml5String = writeHtml5String defaultWriterOptions
 
+myMdToHtml :: T.Text -> PandocIO T.Text
+myMdToHtml i = do
+  (Pandoc _ body) <- myReadMarkdown i
+  myWriteHtml5String (Pandoc mempty body)
+
+myOrgToHtml :: T.Text -> PandocIO T.Text
+myOrgToHtml i = do
+  (Pandoc _ body) <- myReadOrg i
+  myWriteHtml5String (Pandoc mempty body)
+
 getMeta :: Pandoc -> Meta
 getMeta (Pandoc meta _) = meta
 
