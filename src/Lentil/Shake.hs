@@ -60,8 +60,8 @@ buildPages contDir outputDir t = do
       let processed = Page tit cont css now
 
      
-      putVerbose $ "writing to " ++ (outputDir <//> (f -<.> "html"))
-      writeFileChanged (outputDir <//> (f -<.> "html")) (unpack $ t processed)
+      putVerbose $ "writing to " ++ (outputDir </> (f -<.> "html"))
+      writeFileChanged (outputDir </> (f -<.> "html")) (unpack $ t processed)
 
 fileToFormat :: FilePath -> Maybe Format
 fileToFormat f = case takeExtension f of

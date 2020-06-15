@@ -4,6 +4,7 @@ let Config =
       , dataDir : Text
       , contentDir : Text
       , cssDir : Text
+      , staticDirs : List Text
       , templateDir : Text
       , defaultLayout : Text
       , author : Text

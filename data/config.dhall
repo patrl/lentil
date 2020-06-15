@@ -3,6 +3,7 @@
   , dataDir = "data"
   , contentDir = "content"
   , cssDir = "css"
+  , staticDirs = [] : List Text
   , templateDir = "templates"
   , defaultLayout = "default.dhall"
   , author = "Patrick D. Elliott"

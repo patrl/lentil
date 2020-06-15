@@ -16,6 +16,7 @@ data Config = Config {
   , dataDir :: FilePath -- ^ The directory containing the everything necessary to build the site.
   , contentDir :: FilePath -- ^ The directory containing the page configuration (relative to dataDir).
   , cssDir :: FilePath -- ^ The directory containing the static css files (relative to dataDir).
+  , staticDirs :: [FilePath]
   , templateDir :: FilePath -- ^ The directory containing the template files (relative to dataDir).
   , defaultLayout :: FilePath -- ^ The location of the default template used for pages (relative to templateDir).
   , author :: Text -- ^ The author of the site.
