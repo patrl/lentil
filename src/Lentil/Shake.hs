@@ -33,6 +33,10 @@ copyStyleFiles d d' = do
   fs <- getDirectoryFiles d ["//*.css"]
   void $ forP fs $ \f -> copyFileChanged (d </> f) (d' </> f) -- when shake options are "verbose", this implicity sends out a message about copying the files.
 
+copyStaticFiles :: [FilePath] -> FilePath -> Action ()
+copyStaticFiles ds d = do
+  undefined
+
 buildPages :: FilePath -> FilePath -> PageTemplate -> Action ()
 buildPages contDir outputDir t = do
   putVerbose $ "Loading files in " ++ contDir
