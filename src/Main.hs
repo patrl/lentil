@@ -1,7 +1,4 @@
-{-# LANGUAGE DeriveGeneric     #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE DuplicateRecordFields #-}
 
 module Main where
 
@@ -11,6 +8,7 @@ import           Lentil.Shake
 import           Development.Shake.Forward
 import Development.Shake (liftIO,Action,putVerbose)
 import Development.Shake.FilePath ((</>))
+import Data.Text (pack)
 import Lentil.Types
 import Lentil.Serve
 -- import           Text.Pandoc
@@ -23,7 +21,7 @@ main = do
   -- -- This is an extremely simple shake build script which just copies the static css to the deploy folder.
   shakeArgsForward shOpts $ do
     copyStyleFiles (dataDir config </> cssDir config) (siteDir config </> "css/")
-    t <- liftIO $ input auto $ "./data/templates/default.dhall" :: Action (Page -> Text)
+    t <- liftIO $ input auto $ pack $ "." </> dataDir config </> templateDir config </> defaultLayout config :: Action (Page -> Text)
     liftIO $ print ("placeholder" :: String)
     buildPages (dataDir config </> contentDir config) (siteDir config) t
 

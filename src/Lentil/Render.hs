@@ -1,5 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
-
 module Lentil.Render where
 
 import           Lentil.Types

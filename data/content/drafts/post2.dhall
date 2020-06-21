@@ -1,6 +1,8 @@
-  { title = "post 2"
-  , contentFile = "post2.org"
-  , styleFile = "gruvbox.css"
-  , date = None Text
-  }
-: ../../types/PageMeta.dhall
+let Content = < Markdown : Text | Org : Text | Plain : Text >
+
+in    { metaTitle = "post 2"
+      , metaContent = Content.Org ./post2.org as Text
+      , metaStyle = "gruvbox.css"
+      , metaDate = None Text
+      }
+    : ../../types/Meta.dhall

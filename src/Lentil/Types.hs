@@ -3,7 +3,7 @@ Module      : Lentil.Types
 Description : This module establishes the source of truth for the .dhall files used to configure the site.
 -}
 
-{-# LANGUAGE DeriveGeneric,DeriveAnyClass,DuplicateRecordFields #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Lentil.Types where
 
@@ -20,21 +20,32 @@ data Config = Config {
   , templateDir :: FilePath -- ^ The directory containing the template files (relative to dataDir).
   , defaultLayout :: FilePath -- ^ The location of the default template used for pages (relative to templateDir).
   , author :: Text -- ^ The author of the site.
-} deriving (Show, Read, Eq, Generic, FromDhall)
+}
+  deriving (Show, Read, Eq, Generic)
+
+instance FromDhall Config
 
 -- | The source of truth for the dhall files used to configure pages.
-data PageMeta = PageMeta { title :: Text, -- ^ The page title (as markup)
-                   contentFile :: FilePath, -- ^ The location of the contents of the page.
-                   styleFile :: FilePath, -- ^ The location of the css file used for the page.
-                   date :: Maybe Text -- ^ Optionally, the date of publication.
-                         } deriving (Show, Read, Eq, Generic, FromDhall, ToDhall)
+data Meta = Meta { metaTitle :: Text, -- ^ The page title (as markup)
+                   metaContent :: FilePath, -- ^ The location of the contents of the page.
+                   metaStyle :: FilePath, -- ^ The location of the css file used for the page.
+                   metaDate :: Maybe Text -- ^ Optionally, the date of publication.
+                         }
+              deriving (Show, Read, Eq, Generic)
+
+instance FromDhall Meta
+instance ToDhall Meta
 
 -- | The type of something that can be transformed by a PageTemplate into a page (text).
-data Page = Page { title :: Text -- ^ The page title (as html)
-                 , contents :: Text -- ^ The contents of the page (as html)
-                 , style :: Text -- ^ The style of the page (as an url)
-                 , date :: Text -- ^ The date of modification
-                 } deriving (Show, Read, Eq, Generic, FromDhall, ToDhall)
+data Page = Page { pageTitle :: Text -- ^ The page title (as html)
+                 , pageContents :: Text -- ^ The contents of the page (as html)
+                 , pageStyle :: Text -- ^ The style of the page (as an url)
+                 , pageDate :: Text -- ^ The date of modification
+                 }
+          deriving (Show, Read, Eq, Generic)
+
+instance FromDhall Page
+instance ToDhall Page
 
 -- | A type synonym for page templates.
 type PageTemplate = Page -> Text

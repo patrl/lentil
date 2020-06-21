@@ -1,10 +1,11 @@
-{-# LANGUAGE OverloadedStrings, DuplicateRecordFields, LambdaCase #-}
+{-# LANGUAGE OverloadedStrings #-}
 
 module Lentil.Shake
   ( shOpts
   , copyStyleFiles
  , buildPages
   , cleanDir
+  , copyStaticFiles
   )
 where
 
@@ -18,6 +19,7 @@ import qualified Dhall                         as D -- we only want the Text dat
 import qualified Data.Text.IO                  as T
 import           Data.Text                      ( unpack
                                                 , pack
+                                                , Text
                                                 )
 import           Lentil.Types
 
@@ -33,9 +35,13 @@ copyStyleFiles d d' = do
   fs <- getDirectoryFiles d ["//*.css"]
   void $ forP fs $ \f -> copyFileChanged (d </> f) (d' </> f) -- when shake options are "verbose", this implicity sends out a message about copying the files.
 
+-- | copies all files from static directories to an output directory, matching the directory structure
 copyStaticFiles :: [FilePath] -> FilePath -> Action ()
 copyStaticFiles ds d = do
-  undefined
+  void $ forP ds $ \d' ->
+    do
+      fs <- getDirectoryFiles d ["//*"]
+      void $ forP fs $ \f -> copyFileChanged (d </> f) (d' </> f)
 
 buildPages :: FilePath -> FilePath -> PageTemplate -> Action ()
 buildPages contDir outputDir t = do
@@ -44,10 +50,10 @@ buildPages contDir outputDir t = do
 
   void $ forP pageFiles $ \f ->
     do
-      meta <- liftIO $ D.input D.auto $ pack $ "." </> contDir </> f :: Action PageMeta
-      tit <- liftPandoc $ myMdToHtml $ (title :: PageMeta -> D.Text) meta
-      let css = pack $ "./css/" ++ (styleFile :: PageMeta -> FilePath) meta
-      let fcont = contentFile meta
+      meta <- liftIO $ D.input D.auto $ pack $ "." </> contDir </> f :: Action Meta
+      tit <- liftPandoc $ myMdToHtml $ (metaTitle :: Meta -> Text) meta
+      let css = pack $ "./css/" ++ (metaStyle :: Meta -> FilePath) meta
+      let fcont = metaContent meta
       now <- liftPandoc $ liftM (pack . show) P.getCurrentTime
       cont <- case fileToFormat fcont of
           Just HtmlFormat -> liftIO $ T.readFile (contDir </> (takeDirectory f) </> fcont)

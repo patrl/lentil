@@ -23,7 +23,29 @@ dependencies:
 
 source-dirs: src
 
-ghc-options: [-Wall, -threaded]
+ghc-options:
+  - -Wall
+  - -threaded
+  - -Wcompat
+  - -Wincomplete-record-updates
+  - -Wincomplete-uni-patterns
+  - -Wredundant-constraints
+
+default-extensions:
+  - EmptyCase
+  - FlexibleContexts
+  - FlexibleInstances
+  - InstanceSigs
+  - MultiParamTypeClasses
+  - LambdaCase
+  - MultiWayIf
+  - NamedFieldPuns
+  - TupleSections
+  - OverloadedStrings
+  - ScopedTypeVariables
+  - DeriveGeneric
+  - GeneralizedNewtypeDeriving
+  - DerivingStrategies
 
 library: {}
 executable:

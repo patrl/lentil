@@ -1,6 +1,8 @@
-  { title = "Home"
-  , contentFile = "index.md"
-  , styleFile = "gruvbox.css"
-  , date = None Text
-  }
-: ../types/PageMeta.dhall
+let Content = < Markdown : Text | Org : Text | Plain : Text >
+
+in    { metaTitle = "Home"
+      , metaContent = Content.Markdown ./index.md as Text
+      , metaStyle = "gruvbox.css"
+      , metaDate = None Text
+      }
+    : ../types/Meta.dhall
