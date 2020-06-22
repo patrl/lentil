@@ -14,9 +14,14 @@ import Lentil.Serve
 main :: IO ()
 main = do
 
-  config <- input auto "./data/config.dhall" :: IO Config
+  config <- input auto configFile :: IO Config
 
-  let [d',d,c,cd,t,t'] :: [FilePath] = unpack <$> ([siteDir,dataDir,cssDir,contentDir,templateDir,defaultLayout] <*> pure config)
+  let d' = unpack $ siteDir config
+  let d = unpack $ dataDir config
+  let c = unpack $ cssDir config
+  let cd = unpack $ contentDir config
+  let t = unpack $ templateDir config
+  let t' = unpack $ defaultLayout config
 
   let (tempFile :: Text) = pack $ "." </> d </> t </> t'
 
@@ -26,7 +31,10 @@ main = do
   shakeArgsForward shOpts $ do
     copyStyleFiles (d </> c) (d' </> "css/")
     temp <- liftIO $ input auto $ tempFile :: Action (PageTemplate)
-    buildPages (d </> cd) d' temp
+    urls <- buildPages (d </> cd) d' temp
+    liftIO $ print urls
+   
+  serve
 
 serve :: IO ()
 serve = shakeArgsForward shOpts $ do
@@ -39,6 +47,5 @@ clean = shakeArgsForward shOpts $ do
   config <- liftIO $ input auto "./data/config.dhall" :: Action Config
   putVerbose $ "Cleaning " ++ (unpack $ siteDir config)
 
-
-configFile :: FilePath
+configFile :: Text
 configFile = "./data/config.dhall"

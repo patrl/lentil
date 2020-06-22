@@ -46,35 +46,37 @@ copyStyleFiles d d' = do
 parseMetaContent :: Content -> Action (Text)
 parseMetaContent = \case
   (Markdown t) -> liftPandoc $ myMdToHtml t
-  (Org t) -> liftPandoc $ myOrgToHtml t
-  (Plain t) -> return t
+  (Org      t) -> liftPandoc $ myOrgToHtml t
+  (Plain    t) -> return t
 
 parseMetaDate :: Maybe Text -> Action (Text)
 parseMetaDate = \case
   (Just d) -> return d
-  _ -> liftPandoc $ liftM (pack . show) P.getCurrentTime
+  _        -> liftPandoc $ liftM (pack . show) P.getCurrentTime
 
 parseMeta :: Meta -> Action (Page)
 parseMeta m = do
-  let [c,tit] = [metaContent,metaTitle] <*> pure m
-  let dat = metaDate m
-  let css = pack $ "." </> "css" </> (unpack $ metaStyle m)
-  c' <- parseMetaContent c
-  t' <- parseMetaContent tit
-  d' <- parseMetaDate dat
-  return $ Page t' c' css d'
+  let css = pack $ "/css" </> (unpack $ metaStyle m)
+  c' <- parseMetaContent (metaContent m)
+  t' <- parseMetaContent (metaTitle m)
+  d' <- parseMetaDate (metaDate m)
+  return $ Page { pageTitle    = t'
+                , pageContents = c'
+                , pageStyle    = css
+                , pageDate     = d'
+                }
 
-buildPages :: FilePath -> FilePath -> PageTemplate -> Action ()
+buildPages :: FilePath -> FilePath -> PageTemplate -> Action [FilePath]
 buildPages d d' t = do
   putVerbose $ "loading files in " ++ d
   pageFiles <- getDirectoryFiles d ["//*.dhall"]
 
-  void $ forP pageFiles $ \f ->
-    do
-      m <- liftIO $ D.input D.auto $ pack $ "." </> d </> f :: Action Meta
-      p <- parseMeta m
-      putVerbose $ "writing to " ++ (d' </> (f -<.> "html"))
-      writeFileChanged (d' </> (f -<.> "html")) (unpack $ t p)
+  forP pageFiles $ \f -> do
+    m <- liftIO $ D.input D.auto $ pack $ "." </> d </> f :: Action Meta
+    p <- parseMeta m
+    putVerbose $ "writing to " ++ (d' </> (f -<.> "html"))
+    writeFileChanged (d' </> (f -<.> "html")) (unpack $ t p)
+    return (f -<.> "html")
 
 cleanDir :: FilePath -> Action ()
 cleanDir f = do

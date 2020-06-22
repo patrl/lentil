@@ -16,9 +16,9 @@ dependencies:
 - { name: "blaze-html" }
 - { name: "shake" }
 - { name: "text" }
-- { name: "containers" }
 - { name: "wai-app-static" }
 - { name: "warp" }
+- { name: "containers" }
 
 
 source-dirs: src

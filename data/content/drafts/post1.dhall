@@ -1,8 +1,8 @@
 let Content = < Markdown : Text | Org : Text | Plain : Text >
 
-in    { metaTitle = "post 1"
+in    { metaTitle = Content.Markdown "post 1"
       , metaContent = Content.Markdown ./post1.md as Text
       , metaStyle = "gruvbox.css"
-      , metaDate = None Text
+      , metaDate = Some "2020-07-16"
       }
     : ../../types/Meta.dhall
