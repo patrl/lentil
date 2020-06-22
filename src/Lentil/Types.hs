@@ -16,6 +16,3 @@ makeHaskellTypes [ MultipleConstructors "Content" "./data/types/Content.dhall"
 
 -- | A type synonym for page templates.
 type PageTemplate = Page -> Text
-
--- | Formats supported by lentil.
-data Format = HtmlFormat | MarkdownFormat | OrgFormat deriving (Eq,Show,Read)

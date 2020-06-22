@@ -1,10 +1,11 @@
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE OverloadedStrings,LambdaCase #-}
 
 module Lentil.Shake
   ( shOpts
   , copyStyleFiles
- , buildPages
+  , buildPages
   , cleanDir
+  , parseMeta
   -- , copyStaticFiles
   )
 where
@@ -43,43 +44,40 @@ copyStyleFiles d d' = do
 --       fs <- getDirectoryFiles d ["//*"]
 --       void $ forP fs $ \f -> copyFileChanged (d </> f) (d' </> f)
 
+parseMetaContent :: Content -> Action (Text)
+parseMetaContent = \case
+  (Markdown t) -> liftPandoc $ myMdToHtml t
+  (Org t) -> liftPandoc $ myOrgToHtml t
+  (Plain t) -> return t
+
+parseMetaDate :: Maybe Text -> Action (Text)
+parseMetaDate = \case
+  (Just d) -> return d
+  _ -> liftPandoc $ liftM (pack . show) P.getCurrentTime
+
+parseMeta :: FilePath -> Action (Page)
+parseMeta f = do
+  putVerbose $ "loading " ++ f
+  m <- liftIO $ D.input D.auto $ pack $ "." </> f :: Action Meta
+  let [c,tit] = [metaContent,metaTitle] <*> pure m
+  let dat = metaDate m
+  let css = pack $ "." </> "css" </> (unpack $ metaStyle m)
+  c' <- parseMetaContent c
+  t' <- parseMetaContent tit
+  d' <- parseMetaDate dat
+  return $ Page t' c' css d'
+
 buildPages :: FilePath -> FilePath -> PageTemplate -> Action ()
-buildPages contDir outputDir t = do
-  putVerbose $ "Loading files in " ++ contDir
-  pageFiles <- getDirectoryFiles contDir ["//*.dhall"]
+buildPages d d' t = do
+  putVerbose $ "loading files in " ++ d
+  pageFiles <- getDirectoryFiles d ["//*.dhall"]
 
   void $ forP pageFiles $ \f ->
     do
-      meta <- liftIO $ D.input D.auto $ pack $ "." </> contDir </> f :: Action Meta
-      tit <- liftPandoc $ myMdToHtml $ (metaTitle :: Meta -> Text) meta
-      let css = pack $ "./css/" ++ (metaStyle :: Meta -> FilePath) meta
-      let fcont = metaContent meta
-      now <- liftPandoc $ liftM (pack . show) P.getCurrentTime
-      cont <- case fileToFormat fcont of
-          Just HtmlFormat -> liftIO $ T.readFile (contDir </> (takeDirectory f) </> fcont)
-          Just MarkdownFormat -> do
-            md <- liftIO $ T.readFile (contDir </> (takeDirectory f) </> fcont)
-            liftPandoc $ myMdToHtml md
-          Just OrgFormat -> do
-            org <- liftIO $ T.readFile (contDir </> (takeDirectory f) </> fcont)
-            liftPandoc $ myOrgToHtml org
-          Nothing -> do
-            putVerbose $ "The format " ++ takeExtension fcont ++ "is unsupported."
-            return ""
-
-      let processed = Page tit cont css now
-
-     
-      putVerbose $ "writing to " ++ (outputDir </> (f -<.> "html"))
-      writeFileChanged (outputDir </> (f -<.> "html")) (unpack $ t processed)
-
-fileToFormat :: FilePath -> Maybe Format
-fileToFormat f = case takeExtension f of
-  ".md"       -> Just MarkdownFormat
-  ".markdown" -> Just MarkdownFormat
-  ".org"      -> Just OrgFormat
-  ".html"     -> Just HtmlFormat
-  _           -> Nothing
+      m <- liftIO $ D.input D.auto $ pack $ "." </> d </> f :: Action Meta
+      p <- parseMeta m
+      putVerbose $ "writing to " ++ (d' </> (f -<.> "html"))
+      writeFileChanged (d' </> (f -<.> "html")) (unpack $ t p)
 
 cleanDir :: FilePath -> Action ()
 cleanDir f = do
