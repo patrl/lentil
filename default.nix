@@ -20,6 +20,7 @@ let
       pkgs.haskellPackages.ghcid
       pkgs.haskellPackages.hpack
       pkgs.haskellPackages.brittany
+      pkgs.haskellPackages.hlint
       ghcide
       nixpkgs.haskellPackages.dhall_1_32_0
     ];
