@@ -27,3 +27,4 @@ A tiny ~yst~ clone using the ~dhall~ configuration language (WIP: ALMOST NOTHING
 - css/js minification?
 - Currently using MathML to diplay math, which is only really supported in firefox.
 - Use union types in dhall to account for the possibility that the "content" could be either a text value, or a link to a markup file.
+- Use ~Dhall.TH~ to make the dhall types the "source of truth" (see the docs here for reference: [[http://hackage.haskell.org/package/dhall-1.32.0/docs/Dhall-TH.html][Dhall.TH]])

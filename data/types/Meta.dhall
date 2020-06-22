@@ -1,8 +1,6 @@
-let Content = < Markdown : Text | Org : Text | Plain : Text >
-
 let Meta =
-      { metaTitle : Text
-      , metaContent : Content
+      { metaTitle : ./Content.dhall
+      , metaContent : ./Content.dhall
       , metaStyle : Text
       , metaDate : Optional Text
       }
