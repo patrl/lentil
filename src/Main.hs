@@ -1,5 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
-
 module Main where
 
 import           Dhall
@@ -18,12 +16,14 @@ main = do
 
   config <- input auto "./data/config.dhall" :: IO Config
 
+  print "hello haskell!"
+
   -- -- This is an extremely simple shake build script which just copies the static css to the deploy folder.
-  shakeArgsForward shOpts $ do
-    copyStyleFiles (dataDir config </> cssDir config) (siteDir config </> "css/")
-    t <- liftIO $ input auto $ pack $ "." </> dataDir config </> templateDir config </> defaultLayout config :: Action (Page -> Text)
-    liftIO $ print ("placeholder" :: String)
-    buildPages (dataDir config </> contentDir config) (siteDir config) t
+  -- shakeArgsForward shOpts $ do
+  --   copyStyleFiles (dataDir config </> cssDir config) (siteDir config </> "css/")
+  --   t <- liftIO $ input auto $ pack $ "." </> dataDir config </> templateDir config </> defaultLayout config :: Action (Page -> Text)
+  --   liftIO $ print ("placeholder" :: String)
+  --   buildPages (dataDir config </> contentDir config) (siteDir config) t
 
 serve :: IO ()
 serve = shakeArgsForward shOpts $ do
