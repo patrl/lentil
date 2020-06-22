@@ -1,4 +1,4 @@
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE OverloadedStrings,ScopedTypeVariables #-}
 
 module Main where
 
@@ -10,23 +10,23 @@ import Development.Shake.FilePath ((</>))
 import Data.Text (pack,unpack)
 import Lentil.Types
 import Lentil.Serve
--- import           Text.Pandoc
 
 main :: IO ()
 main = do
 
   config <- input auto "./data/config.dhall" :: IO Config
 
-  let (deployPath :: FilePath) = unpack $ siteDir config
+  let [d',d,c,cd,t,t'] :: [FilePath] = unpack <$> ([siteDir,dataDir,cssDir,contentDir,templateDir,defaultLayout] <*> pure config)
 
-  print $ "building site in: " ++ deployPath
+  let (tempFile :: Text) = pack $ "." </> d </> t </> t'
 
-  -- -- This is an extremely simple shake build script which just copies the static css to the deploy folder.
-  -- shakeArgsForward shOpts $ do
-  --   copyStyleFiles (dataDir config </> cssDir config) (siteDir config </> "css/")
-  --   t <- liftIO $ input auto $ pack $ "." </> dataDir config </> templateDir config </> defaultLayout config :: Action (Page -> Text)
-  --   liftIO $ print ("placeholder" :: String)
-  --   buildPages (dataDir config </> contentDir config) (siteDir config) t
+  print $ "building site in: " ++ d'
+
+  -- This is an extremely simple shake build script which just copies the static css to the deploy folder.
+  shakeArgsForward shOpts $ do
+    copyStyleFiles (d </> c) (d' </> "css/")
+    temp <- liftIO $ input auto $ tempFile :: Action (PageTemplate)
+    buildPages (d </> cd) d' temp
 
 serve :: IO ()
 serve = shakeArgsForward shOpts $ do

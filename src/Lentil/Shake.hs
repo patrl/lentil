@@ -17,7 +17,6 @@ import           Development.Shake.FilePath
 import           Control.Monad
 import qualified Text.Pandoc                   as P
 import qualified Dhall                         as D -- we only want the Text datatype
-import qualified Data.Text.IO                  as T
 import           Data.Text                      ( unpack
                                                 , pack
                                                 , Text
@@ -41,8 +40,8 @@ copyStyleFiles d d' = do
 -- copyStaticFiles ds d = do
 --   void $ forP ds $ \d' ->
 --     do
---       fs <- getDirectoryFiles d ["//*"]
---       void $ forP fs $ \f -> copyFileChanged (d </> f) (d' </> f)
+--       fs <- getDirectoryFiles d' ["//*"]
+--       void $ forP fs $ \f -> copyFileChanged (d' </> f) (d </> f)
 
 parseMetaContent :: Content -> Action (Text)
 parseMetaContent = \case
@@ -55,10 +54,8 @@ parseMetaDate = \case
   (Just d) -> return d
   _ -> liftPandoc $ liftM (pack . show) P.getCurrentTime
 
-parseMeta :: FilePath -> Action (Page)
-parseMeta f = do
-  putVerbose $ "loading " ++ f
-  m <- liftIO $ D.input D.auto $ pack $ "." </> f :: Action Meta
+parseMeta :: Meta -> Action (Page)
+parseMeta m = do
   let [c,tit] = [metaContent,metaTitle] <*> pure m
   let dat = metaDate m
   let css = pack $ "." </> "css" </> (unpack $ metaStyle m)
