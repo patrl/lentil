@@ -2,7 +2,7 @@
 Module      : Lentil.Types
 -}
 
-{-# LANGUAGE DeriveAnyClass,DerivingStrategies,DeriveGeneric,StandaloneDeriving,TemplateHaskell,OverloadedStrings #-}
+{-# LANGUAGE DeriveAnyClass,DerivingStrategies,DeriveGeneric,StandaloneDeriving,TemplateHaskell #-}
 
 module Lentil.Types where
 

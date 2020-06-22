@@ -1,5 +1,3 @@
-{-# LANGUAGE OverloadedStrings,LambdaCase #-}
-
 module Lentil.Shake
   ( shOpts
   , copyStyleFiles
