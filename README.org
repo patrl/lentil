@@ -14,6 +14,61 @@ A tiny ~yst~ clone using the ~dhall~ configuration language (BEWARE, WIP).
 
 ** TODO Usage
 
+*** TODO Site configuration
+
+The global site configuration is defined in ~config.dhall~, which is assumed to reside at the root of the data directory. It is of type ~Config~, and contains the following values:
+
+#+BEGIN_SRC dhall
+  { title = "Patrick D. Elliott"
+  , siteDir = "site"
+  , dataDir = "data"
+  , contentDir = "content"
+  , cssDir = "css"
+  , staticDirs = [] : List Text
+  , templateDir = "templates"
+  , defaultLayout = "default.dhall"
+  , author = "Patrick D. Elliott"
+  }
+: ./types/Config.dhall
+#+END_SRC
+
+- ~title~ :: the site title.
+- ~siteDir~ :: the directory to which the built site is deployed.
+- ~dataDir~ :: where the site data resides.
+- ~contentDir~ :: where the ~dhall~ files specifying the pages to be built reside. The structure of the deployed site mirrors the directory structure of the content directory. Each ~dhall~ file in the content directory is assumed to be of type ~Meta~, and corresponds to a single page.
+- ~cssDir~ :: where the ~css~ files reside.
+- ~staticDirs~ :: directories containing any static files.
+- ~templateDir~ :: directory containing templates (~dhall~ functions).
+- ~defaultLayout~ :: the default template used to build pages from ~Meta~ values.
+- ~author~ :: the site author.
+
+*** TODO Building pages from ~dhall~ files
+
+The content directory is assumed to contain ~dhall~ files of type ~Meta~, specifying how to build individual pages. An example is given below:
+
+#+BEGIN_SRC dhall
+let Content = < Markdown : Text | Org : Text | Plain : Text >
+
+in    { metaTitle = Content.Markdown "Home"
+      , metaContent = Content.Markdown ./index.md as Text
+      , metaStyle = "gruvbox.css"
+      , metaDate = None Text
+      }
+    : ../types/Meta.dhall
+#+END_SRC
+
+A full specification of a page consists of:
+
+- ~metaTitle~ :: the page title.
+- ~metaStyle~ :: the name of the style file to be included in the header.
+
+The remaining fields take advantage of some of the more interesting aspects of ~dhall~'s type system, so we'll dwell on them here.
+
+~metaDate~ is of type ~Optional Text~. This means that the user can either manually specify the date, by replacing the value of the field with, e.g., ~Some "2020-06-23"~, or leave it empty, as above. If left empty, lentil will automatically set the date to the current date. ~Optional~ in dhall is therefore similar to ~Maybe~ in haskell.
+
+~metaContent~ is of type ~Content~ -- a union type. This wraps a text value in a constructor indicating the type of markup used. If ~Org~ or ~Markdown~, lentil will automatically parse the content and render it as html via pandoc. If ~Plain~, the content is assumed to be html and will be left unchanged.
+
+
 ** TODO
 
 - css/js minification?
