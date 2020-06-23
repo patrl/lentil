@@ -4,6 +4,17 @@ let concat = https://prelude.dhall-lang.org/Text/concat
 
 let defaultMap = https://prelude.dhall-lang.org/Text/defaultMap
 
+let ResourceUrl = < Slides : Text | Handout : Text | NoUrl >
+
+let printUrl =
+      λ(url : ResourceUrl) →
+        merge
+          { Slides = λ(t : Text) → ". [Slides](${t})."
+          , Handout = λ(t : Text) → ". [Handout](${t})."
+          , NoUrl = ""
+          }
+          url
+
 in  λ(talk : ../types/Talk.dhall) →
           "- "
       ++  concatSep
@@ -11,8 +22,5 @@ in  λ(talk : ../types/Talk.dhall) →
             [ concatSep ", " ([ "Patrick D. Elliott" ] # talk.coauthors)
             , talk.date
             , talk.title
-            , concat
-                [ defaultMap Text ./handoutToLink.dhall talk.handoutUrl
-                , defaultMap Text ./slideToLink.dhall talk.slideUrl
-                ]
             ]
+      ++  printUrl talk.url
