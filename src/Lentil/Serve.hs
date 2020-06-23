@@ -1,5 +1,3 @@
--- | 
-
 module Lentil.Serve (serveDir) where
 
 import           Network.Wai.Handler.Warp       ( run )

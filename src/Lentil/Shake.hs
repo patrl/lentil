@@ -4,7 +4,6 @@ module Lentil.Shake
   , buildPages
   , cleanDir
   , parseMeta
-  -- , copyStaticFiles
   )
 where
 
@@ -32,14 +31,6 @@ copyStyleFiles :: FilePath -> FilePath -> Action ()
 copyStyleFiles d d' = do
   fs <- getDirectoryFiles d ["//*.css"]
   void $ forP fs $ \f -> copyFileChanged (d </> f) (d' </> f) -- when shake options are "verbose", this implicity sends out a message about copying the files.
-
--- -- | copies all files from static directories to an output directory, matching the directory structure
--- copyStaticFiles :: [FilePath] -> FilePath -> Action ()
--- copyStaticFiles ds d = do
---   void $ forP ds $ \d' ->
---     do
---       fs <- getDirectoryFiles d' ["//*"]
---       void $ forP fs $ \f -> copyFileChanged (d' </> f) (d </> f)
 
 parseMetaContent :: Content -> Action (Text)
 parseMetaContent = \case

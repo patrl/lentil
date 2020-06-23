@@ -18,3 +18,4 @@ A tiny ~yst~ clone using the ~dhall~ configuration language (BEWARE, WIP).
 
 - css/js minification?
 - Currently using MathML to diplay math, which is only really supported in firefox.
+- Looks like I need to disable the haskell-ghc flychecker for this project.
