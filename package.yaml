@@ -3,7 +3,7 @@ name: lentil
 author: Patrick D. Elliott
 version: 0.0.0
 maintainer: patrick.d.elliott@gmail.com
-license: MIT
+license: BSD3
 
 build-type: Simple
 
