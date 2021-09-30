@@ -14,5 +14,5 @@ makeHaskellTypes [ MultipleConstructors "Content" "./data/types/Content.dhall"
                  , SingleConstructor "Config" "Config" "./data/types/Config.dhall"
                  , SingleConstructor "Page" "Page" "./data/types/Page.dhall"]
 
--- | A type synonym for page templates.
+--  A type synonym for page templates.
 type PageTemplate = Page -> Text
